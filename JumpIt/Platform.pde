@@ -1,31 +1,45 @@
-class Platform {
+public class Platform {
+  public static final boolean DRAW_SPRITE = true;
 
-  float x = 0;
-  float y = 0;
-  PImage sprite;
-  boolean drawSprite;
+  private float x = 0;
+  private float y = 0;
+  private PImage sprite = loadImage("platform.png");
 
-  float jumpSpeed= 30;
-  float W = 70;
-  float H = 10;
+  private float W = DRAW_SPRITE ? sprite.width : 70;
+  private float H = DRAW_SPRITE ? sprite.height : 10;
 
-  Platform(float x, float y, boolean drawSprite) {
-    this.x = x;
-    this.y = y;
-    this.drawSprite = drawSprite;
-    if (drawSprite)
-      sprite = loadImage("platform.png");
-  }
 
-  void render() {
-    if (drawSprite) {
+  public Platform(float y, boolean randomize) {
+    this.x = (float)Math.random() * (width - W);
+
+    if (randomize) {
+      this.y = (float)Math.random() * 300 + y;
     } else {
-      fill(0);
-      rect(x, y, W, H);
+      this.y = y;
     }
   }
 
-  void update(float vy) {
-    y += vy;
+  public void render(Camera camera) {
+    
+    if (DRAW_SPRITE) {
+      image(sprite, x, camera.adapt(y));
+    } else {
+      fill(0);
+      rect(x, camera.adapt(y), W, H);
+    }
   }
+
+  public void update() {
+  }
+
+  public float getY() {
+    return y;
+  }
+
+  public float getX() {
+    return x;
+  }
+  
+  
+  
 }

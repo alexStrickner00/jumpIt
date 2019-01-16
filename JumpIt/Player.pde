@@ -1,26 +1,27 @@
 class Player {
 
+  private float x = 0;
+  private float y = 1000;
+  private float vx = 0;
+  private float vy = 0;
 
-  float x = 0;
-  float y = 100;
-  float vx = 0;
-
-  boolean move = true;
-  boolean hitbox = false;
+  private final static boolean SHOW_HITBOX = true;
 
   final int SPEED_X = 6;
-  final float ax = 0.1;
+  
+  private float ax = 0.1;
+  private float ay = -0.3;
+  private float jumpVy = 18;
 
   PImage sprite;
 
-  public Player(boolean hitbox) {  
-    this.hitbox = hitbox;
+  public Player() {  
     sprite = loadImage("player.png");
   }
 
-  void update() {
-    if (!move)
-      return;
+  public float update() {
+    y += vy;
+    vy += ay;
     x += vx;
 
     if (vx > 0) {
@@ -47,23 +48,44 @@ class Player {
       x += width;
       x %= width;
     }
+    return y;
   }
 
-  void render() {
-    image(sprite, x, y);
-    image(sprite, x - width, y);
-    image(sprite, x + width, y);
-    if (hitbox) {
+  void render(Camera camera) {
+    image(sprite, x, camera.adapt(y));
+    image(sprite, x - width, camera.adapt(y));
+    image(sprite, x + width, camera.adapt(y));
+    if (SHOW_HITBOX) {
       noFill();
-      rect(x, y, sprite.width, sprite.height);
+      rect(x, camera.adapt(y), sprite.width, sprite.height);
     }
   }
 
-  void left() {
+  public void jump(){
+    vy = jumpVy;
+  }
+
+  public void left() {
     vx = -SPEED_X;
   }
 
-  void right() {
+  public void right() {
     vx = SPEED_X;
+  }
+
+  public float getX() {
+    return x;
+  }
+
+  public float getY() {
+    return y;
+  }
+
+  public float getVx() {
+    return vx;
+  }
+
+  public float getVy() {
+    return vy;
   }
 }
