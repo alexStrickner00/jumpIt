@@ -1,17 +1,19 @@
 class Player {
 
-  private float x = 0;
+  private float x = 50;
   private float y = 1000;
   private float vx = 0;
   private float vy = 0;
 
-  private final static boolean SHOW_HITBOX = true;
+  private final static boolean SHOW_HITBOX = false;
+  private final static float DYING_SPEED = -25;
 
   final int SPEED_X = 6;
-  
+
   private float ax = 0.1;
   private float ay = -0.3;
   private float jumpVy = 18;
+  private boolean alive = true;
 
   PImage sprite;
 
@@ -20,6 +22,14 @@ class Player {
   }
 
   public float update() {
+
+    if (!alive) {
+      return y;
+    }
+    
+    if (vy < DYING_SPEED)
+      alive = false;
+
     y += vy;
     vy += ay;
     x += vx;
@@ -59,9 +69,13 @@ class Player {
       noFill();
       rect(x, camera.adapt(y), sprite.width, sprite.height);
     }
+    if(!alive){
+      fill(255,0,0);
+      rect(x , camera.adapt(y), sprite.width, sprite.height);
+    }
   }
 
-  public void jump(){
+  public void jump() {
     vy = jumpVy;
   }
 

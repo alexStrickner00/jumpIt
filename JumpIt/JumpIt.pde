@@ -1,13 +1,33 @@
+import java.net.*;
+
 Game game;
+ServerSocket server;
+NetworkConnection con;
+
 
 void setup() {
   size(400, 800);
-  game = new Game();
+
+  try {
+    server = new ServerSocket(8099);
+    Socket client = null;
+    while (client == null || !client.isConnected()) {
+      client = server.accept();
+      con = new NetworkConnection(client);
+    }
+    
+  } 
+  catch(IOException e) {
+    e.printStackTrace();
+  }
+  
+  game = new Game(con);
   game.init();
   game.startGame();
-  game.addPlayer(new Player());
+  con.start();
+  
 }
 
-void draw(){
+void draw() {
   game.run();
 }
