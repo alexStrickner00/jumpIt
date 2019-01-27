@@ -15,17 +15,13 @@ void setup() {
       client = server.accept();
       con = new NetworkConnection(client);
     }
-    
   } 
   catch(IOException e) {
     e.printStackTrace();
   }
-  
+
   game = new Game(con);
-  game.init();
-  game.startGame();
   con.start();
-  
 }
 
 void draw() {

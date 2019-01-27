@@ -12,8 +12,10 @@ public class Game {
 
   public Game(NetworkConnection con) {
     this.con = con;
+    this.con.setGame(this);
     players = new ArrayList<Player>();
     con.setPlayers(players);
+    this.init();
   }
 
   public void init() {
@@ -25,6 +27,7 @@ public class Game {
 
   public void startGame() {
     started = true;
+    println("started game");
   }
 
   public void run() {
@@ -33,8 +36,10 @@ public class Game {
     world.checkAndGenerate(highest);
   }
 
-  public void addPlayer(Player p) {
-    players.add(p);
+  public int addPlayer() {
+    int id = players.size();
+    players.add(new Player(id));
+    return id;
   }
 
   private void renderSprites() {
@@ -45,7 +50,7 @@ public class Game {
   }
 
   private void updateSprites() {
-    if (started) {
+    if (started && !finished) {
       float _highest = Float.MIN_VALUE;
       //Update & Collision for each Player
       for (Player p : players) {
@@ -68,5 +73,9 @@ public class Game {
       highest = _highest;
       camera.setHighest(highest);
     }
+  }
+
+  public void end() {
+    this.finished = true;
   }
 }

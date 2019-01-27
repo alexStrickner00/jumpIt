@@ -20,7 +20,7 @@ public class Platform {
   }
 
   public void render(Camera camera) {
-    
+
     if (DRAW_SPRITE) {
       image(sprite, x, camera.adapt(y));
     } else {
@@ -39,7 +39,4 @@ public class Platform {
   public float getX() {
     return x;
   }
-  
-  
-  
 }

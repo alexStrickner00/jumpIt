@@ -1,5 +1,7 @@
 class Player {
 
+  private int id = -1;
+
   private float x = 50;
   private float y = 1000;
   private float vx = 0;
@@ -10,6 +12,8 @@ class Player {
 
   final int SPEED_X = 6;
 
+  private float highest;
+
   private float ax = 0.1;
   private float ay = -0.3;
   private float jumpVy = 18;
@@ -17,7 +21,8 @@ class Player {
 
   PImage sprite;
 
-  public Player() {  
+  public Player( int id) { 
+    this.id = id;
     sprite = loadImage("player.png");
   }
 
@@ -26,13 +31,17 @@ class Player {
     if (!alive) {
       return y;
     }
-    
+
     if (vy < DYING_SPEED)
       alive = false;
 
     y += vy;
     vy += ay;
     x += vx;
+
+    if (y > highest) {
+      highest = y;
+    }
 
     if (vx > 0) {
       if (vx - ax >= 0) {
@@ -69,9 +78,9 @@ class Player {
       noFill();
       rect(x, camera.adapt(y), sprite.width, sprite.height);
     }
-    if(!alive){
-      fill(255,0,0);
-      rect(x , camera.adapt(y), sprite.width, sprite.height);
+    if (!alive) {
+      fill(255, 0, 0);
+      rect(x, camera.adapt(y), sprite.width, sprite.height);
     }
   }
 
@@ -101,5 +110,13 @@ class Player {
 
   public float getVy() {
     return vy;
+  }
+
+  public float getHighest() {
+    return highest;
+  }
+
+  public int getId() {
+    return id;
   }
 }

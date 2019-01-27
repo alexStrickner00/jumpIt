@@ -1,0 +1,24 @@
+Format: <command>_<arg>_<arg>.....
+
+Command doc:
+
+Ingoing:
+m_<$player_id>_<l/r>
+	Move Player with id $player_id left or right (l/r)
+
+ap_<$count>
+	add $count players
+
+sg
+	start the game
+
+eg
+	end the game
+
+
+Outgoing:
+np_<$player_id>
+	player added with id $player_id
+
+pstats_<$player_id>_<$fitess>
+	stats of player with id $player_id: fitness is $fitness

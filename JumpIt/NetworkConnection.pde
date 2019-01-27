@@ -7,6 +7,7 @@ public class NetworkConnection extends Thread {
   private BufferedReader reader;
   private PrintWriter writer;
   private ArrayList<Player> players;
+  private Game hostGame;
 
   public NetworkConnection(Socket socket) {
     this.socket = socket;
@@ -23,6 +24,10 @@ public class NetworkConnection extends Thread {
     this.players = players;
   }
 
+  public void setGame(Game game) {
+    this.hostGame = game;
+  }
+
   @Override
     public void run() {
     while (socket.isConnected()) {
@@ -30,7 +35,6 @@ public class NetworkConnection extends Thread {
       handleCommand(input);
     }
   }
-
   public String waitForCommand() {
     String input = null;
     try {
@@ -43,8 +47,21 @@ public class NetworkConnection extends Thread {
   }
 
   public void handleCommand(String input) {
-
-    move(players.get(Integer.parseInt(input.charAt(0) + "")), input.split("_")[1]);
+    String[] args = input.split("_");
+    switch(args[0].trim()) {
+    case "m":     
+      move(players.get(Integer.parseInt(args[1] + "")), args[2]);
+      break;
+    case "ap":
+      addPlayers(Integer.parseInt(args[1]));
+      break;
+    case "sg":
+      this.hostGame.startGame();
+      break;
+    case "eg":
+      this.endGame();
+      break;
+    }
   }
 
   public void move(Player p, String direction) {
@@ -56,5 +73,22 @@ public class NetworkConnection extends Thread {
       p.right();
       break;
     }
+  }
+
+  private void addPlayers(int count) {
+    for (int i = 0; i < count; i++) {
+      int id = game.addPlayer();
+      writer.printf("np_%d\n", id);
+    }
+    writer.flush();
+  }
+
+
+  private void endGame() {
+    this.hostGame.end();
+    for (Player p : players) {
+      writer.printf("pstats_%d_%.0f\n", p.getId(), p.getHighest());
+    }
+    writer.flush();
   }
 }
