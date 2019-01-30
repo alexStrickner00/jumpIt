@@ -23,11 +23,20 @@ public class Game {
     camera = new Camera();
     started = false;
     finished = false;
+    for(Player p : players){
+      p.setAlive(true);
+    }
   }
 
   public void startGame() {
     started = true;
     println("started game");
+  }
+
+  public void restartGame(){
+    this.end();
+    this.init();
+    this.startGame();
   }
 
   public void run() {

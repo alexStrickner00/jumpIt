@@ -61,6 +61,9 @@ public class NetworkConnection extends Thread {
     case "eg":
       this.endGame();
       break;
+    case "rg":
+      this.hostGame.restartGame();
+      break;
     }
   }
 

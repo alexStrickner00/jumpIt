@@ -8,6 +8,7 @@ class Player {
   private float vy = 0;
 
   private final static boolean SHOW_HITBOX = false;
+  private final static boolean OVERFLOW = false;
   private final static float DYING_SPEED = -25;
 
   final int SPEED_X = 6;
@@ -58,22 +59,31 @@ class Player {
         vx = 0;
       }
     }
+    if (OVERFLOW) {
+      if (x > 0) {
+        x %= width;
+      }
 
-    if (x > 0) {
-      x %= width;
-    }
+      if (x < (0-sprite.width)) {
+        x += width;
+        x %= width;
+      }
+    } else {
+      if (x < 0)
+        x = 0;
 
-    if (x < (0-sprite.width)) {
-      x += width;
-      x %= width;
+      if (x + sprite.width > width)
+        x = width - sprite.width;
     }
     return y;
   }
 
   void render(Camera camera) {
     image(sprite, x, camera.adapt(y));
-    image(sprite, x - width, camera.adapt(y));
-    image(sprite, x + width, camera.adapt(y));
+    if (OVERFLOW) {
+      image(sprite, x - width, camera.adapt(y));
+      image(sprite, x + width, camera.adapt(y));
+    }
     if (SHOW_HITBOX) {
       noFill();
       rect(x, camera.adapt(y), sprite.width, sprite.height);
@@ -119,4 +129,10 @@ class Player {
   public int getId() {
     return id;
   }
+  
+  
+public void setAlive(boolean alive){
+  this.alive = alive;
+}  
+
 }
