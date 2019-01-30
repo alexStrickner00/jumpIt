@@ -30,11 +30,13 @@ public class World {
     for (Platform pf : platforms) {
       pf.render(camera);
     }
+    println("Platform count: " + platforms.size());
   }
 
   public void checkAndGenerate(float highestPlayer) {
-    if (highestPlayer + 1000 < platforms.get(platforms.size() - 1).getY()) {
+    if (highestPlayer + 1000 > platforms.get(platforms.size() - 1).getY()) {
       generate(20);
+      System.out.printf("highest player: %f\thighest pf: %f", highestPlayer, platforms.get(platforms.size() - 1).getY());
     }
   }
 }

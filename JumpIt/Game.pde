@@ -33,8 +33,8 @@ public class Game {
   public void run() {
     updateSprites();
     renderSprites();
-    world.checkAndGenerate(highest);
-  }
+    world.checkAndGenerate(highest);  
+}
 
   public int addPlayer() {
     int id = players.size();
