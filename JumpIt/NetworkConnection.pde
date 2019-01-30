@@ -50,7 +50,7 @@ public class NetworkConnection extends Thread {
     String[] args = input.split("_");
     switch(args[0].trim()) {
     case "m":     
-      move(players.get(Integer.parseInt(args[1] + "")), args[2]);
+      move(Integer.parseInt(args[1]), args[2]);
       break;
     case "ap":
       addPlayers(Integer.parseInt(args[1]));
@@ -67,13 +67,26 @@ public class NetworkConnection extends Thread {
     }
   }
 
-  public void move(Player p, String direction) {
+  public void move(int id, String direction) {
+    Player pl = null;
+    for (Player p : players) {
+      if (p.getId() == id) {
+        pl = p;
+        break;
+      }
+    }
+
+    if (pl == null)
+      return;
+
     switch (direction.charAt(0)) {
     case 'l': 
-      p.left();
+      pl.left();
       break;
     case 'r': 
-      p.right();
+      pl.right();
+      break;
+    default:
       break;
     }
   }

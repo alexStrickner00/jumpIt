@@ -23,27 +23,26 @@ public class Game {
     camera = new Camera();
     started = false;
     finished = false;
-    for(Player p : players){
-      p.setAlive(true);
+    for (Player p : players) {
+      p.init();
     }
   }
 
   public void startGame() {
+    this.init();
     started = true;
-    println("started game");
   }
 
-  public void restartGame(){
+  public void restartGame() {
     this.end();
-    this.init();
     this.startGame();
   }
 
   public void run() {
     updateSprites();
     renderSprites();
-    world.checkAndGenerate(highest);  
-}
+    world.checkAndGenerate(highest);
+  }
 
   public int addPlayer() {
     int id = players.size();
@@ -60,11 +59,14 @@ public class Game {
 
   private void updateSprites() {
     if (started && !finished) {
+      finished = true;
       float _highest = Float.MIN_VALUE;
       //Update & Collision for each Player
       for (Player p : players) {
         float cy = p.update();
 
+        if (p.isAlive())
+          finished = false;
         //Wenn player höher als vorheriger Höchster, soll dieser wert gespeichert werden -> Kameraverfolgung des höchsten
         if (cy > _highest) {
           _highest = cy;

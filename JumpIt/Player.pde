@@ -14,6 +14,7 @@ class Player {
   final int SPEED_X = 6;
 
   private float highest;
+  private long lastHighestSet;
 
   private float ax = 0.1;
   private float ay = -0.3;
@@ -25,15 +26,24 @@ class Player {
   public Player( int id) { 
     this.id = id;
     sprite = loadImage("player.png");
+    init();
+  }
+
+  public void init() {
+    x = 50;
+    y = 1000;
+    vx = 0;
+    vy = 0;
+    alive = true;
+    lastHighestSet = System.currentTimeMillis();
   }
 
   public float update() {
-
     if (!alive) {
       return y;
     }
 
-    if (vy < DYING_SPEED)
+    if (vy < DYING_SPEED || System.currentTimeMillis() - lastHighestSet > 30 * 1000)
       alive = false;
 
     y += vy;
@@ -42,6 +52,7 @@ class Player {
 
     if (y > highest) {
       highest = y;
+      lastHighestSet = System.currentTimeMillis();
     }
 
     if (vx > 0) {
@@ -127,12 +138,10 @@ class Player {
   }
 
   public int getId() {
-    return id;
+    return this.id;
   }
-  
-  
-public void setAlive(boolean alive){
-  this.alive = alive;
-}  
 
+  public boolean isAlive() {
+    return this.alive;
+  }
 }
