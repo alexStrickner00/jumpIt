@@ -1,5 +1,10 @@
+static float lastX = 0;
+
 public class Platform {
-  public static final boolean DRAW_SPRITE = true;
+  private static final boolean DRAW_SPRITE = true;
+  
+  //probability in percent if x-position of generated platform should depend on last generated platforms x-position
+  private static final float ALTERNATING_SITE_PROBABILITY = 75;
 
   private float x = 0;
   private float y = 0;
@@ -10,10 +15,21 @@ public class Platform {
 
 
   public Platform(float y, boolean randomize) {
-    this.x = (float)Math.random() * (width - W);
 
+    if (random(100) < ALTERNATING_SITE_PROBABILITY) {
+      if (lastX < (width - W) / 2) {
+        this.x = random(((width - W) / 2), (width-W));
+      } else {
+        this.x = random(0, ((width-W) / 2));
+      }
+    } else {
+      this.x = random((width - W));
+    }
+    
+    lastX = this.x;
+    
     if (randomize) {
-      this.y = (float)Math.random() * 300 + y;
+      this.y = random(200, 540) + y;
     } else {
       this.y = y;
     }

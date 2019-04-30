@@ -49,6 +49,10 @@ public class NetworkConnection extends Thread {
   public void handleCommand(String input) {
     String[] args = input.split("_");
     switch(args[0].trim()) {
+
+    case "status":
+      status(Integer.parseInt(args[1]));
+      break;
     case "m":     
       move(Integer.parseInt(args[1]), args[2]);
       break;
@@ -59,7 +63,7 @@ public class NetworkConnection extends Thread {
       this.hostGame.startGame();
       break;
     case "eg":
-      this.endGame();
+      this.hostGame.end();
       break;
     case "rg":
       this.hostGame.restartGame();
@@ -99,9 +103,16 @@ public class NetworkConnection extends Thread {
     writer.flush();
   }
 
+  private void status(int playerid) {
+    Player player = players.get(playerid);
+    double vy = player.getVy();
+    double xDist = game.getWorld().getNextPlatform(player).getX();
+    double fitness = player.getHighest();
+    writer.printf( "%d_%f_%f_%f\n", playerid, vy, xDist, fitness);
+    writer.flush();
+  }
 
-  private void endGame() {
-    this.hostGame.end();
+  void sendEndStats() {
     for (Player p : players) {
       writer.printf("pstats_%d_%.0f\n", p.getId(), p.getHighest());
     }

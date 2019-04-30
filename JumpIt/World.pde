@@ -13,7 +13,6 @@ public class World {
 
   public void generate(int amount) {
     float lastY = platforms.size() > 0 ? platforms.get(platforms.size() - 1).getY() : 0;
-
     for (int i = 0; i < amount; i++) {
       platforms.add(new Platform(lastY, true));
       lastY = platforms.get(platforms.size()-1).getY();
@@ -37,5 +36,15 @@ public class World {
       generate(20);
     }
     
+  }
+  
+  public Platform getNextPlatform(Player p){
+    for(Platform plat : platforms){
+      if(plat.getY() > p.getY()){
+        return plat;
+      }
+    }
+    
+    return null;
   }
 }

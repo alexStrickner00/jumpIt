@@ -1,3 +1,15 @@
+private static float speedMultiplier = 1;
+
+public static void setSpeedMultiplier(float sm) {
+  if (sm > 0 && sm < 50) {
+    speedMultiplier = sm;
+  }
+}  
+public static float getSpeedMultiplier() {
+  return speedMultiplier;
+}
+
+
 class Player {
 
   private int id = -1;
@@ -25,7 +37,7 @@ class Player {
 
   public Player( int id) { 
     this.id = id;
-    sprite = loadImage("player.png");
+    this.sprite = loadImage("player.png");
     init();
   }
 
@@ -36,6 +48,7 @@ class Player {
     vy = 0;
     alive = true;
     lastHighestSet = System.currentTimeMillis();
+    speedMultiplier = 1;
   }
 
   public float update() {
@@ -43,12 +56,12 @@ class Player {
       return y;
     }
 
-    if (vy < DYING_SPEED || System.currentTimeMillis() - lastHighestSet > 30 * 1000)
+    if (vy < DYING_SPEED * speedMultiplier || System.currentTimeMillis() - lastHighestSet > 30 * 1000)
       alive = false;
 
-    y += vy;
-    vy += ay;
-    x += vx;
+    vy += ay * speedMultiplier;
+    y += vy * speedMultiplier;
+    x += vx * speedMultiplier;
 
     if (y > highest) {
       highest = y;
@@ -57,7 +70,7 @@ class Player {
 
     if (vx > 0) {
       if (vx - ax >= 0) {
-        vx -= ax;
+        vx -= ax * speedMultiplier;
       } else {
         vx = 0;
       }
@@ -65,7 +78,7 @@ class Player {
 
     if (vx < 0) {
       if (vx + ax <= 0) {
-        vx += ax;
+        vx += ax * speedMultiplier;
       } else {
         vx = 0;
       }
@@ -92,8 +105,8 @@ class Player {
   void render(Camera camera) {
     image(sprite, x, camera.adapt(y));
     if (OVERFLOW) {
-      image(sprite, x - width, camera.adapt(y));
-      image(sprite, x + width, camera.adapt(y));
+      image(sprite, (x - width), camera.adapt(y));
+      image(sprite, (x + width), camera.adapt(y));
     }
     if (SHOW_HITBOX) {
       noFill();
