@@ -4,7 +4,7 @@ public static void setSpeedMultiplier(float sm) {
   if (sm > 0 && sm < 50) {
     speedMultiplier = sm;
   }
-}  
+}
 public static float getSpeedMultiplier() {
   return speedMultiplier;
 }
@@ -35,7 +35,7 @@ class Player {
 
   PImage sprite;
 
-  public Player( int id) { 
+  public Player( int id) {
     this.id = id;
     this.sprite = loadImage("player.png");
     init();

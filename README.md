@@ -18,3 +18,10 @@ To control the game all you have to do is sending the following commands:
 * get stats of specific player: `status_<player_id>`
 
 **Every command has to end with a `newline (\n)` character!**
+
+## Responses from JumpIt
+Some commands you send expect a response from JumpIt. The syntax is nearly the same like the command syntax.
+
+* status: if you send the `status` command you receive the following response: `<player_id>_<y-velocity>_<x-distance-to-next-platform>_<fitness>`
+
+* when the game finished JumpIt sends the final stats in following format: `pstats_<player_id>_<fitness>`
