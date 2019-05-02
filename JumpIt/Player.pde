@@ -49,6 +49,7 @@ class Player {
     alive = true;
     lastHighestSet = System.currentTimeMillis();
     speedMultiplier = 1;
+    highest = 0;
   }
 
   public float update() {
