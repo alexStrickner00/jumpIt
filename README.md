@@ -1,4 +1,5 @@
-# JumpIt
+
+# jumpIt
 ## Connection
 ___JumpIt___ runs on port 8099. To connect to it, you just have to open a TCP-socket session to `<host-address\>:8099`.
 To try and test the game you could either use telnet or [NetKeys](https://github.com/alexStrickner00/NetKeys).
