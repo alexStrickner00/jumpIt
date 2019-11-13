@@ -1,3 +1,5 @@
+
+private static boolean CAMERA_MODE_AUTO = false;
 public class Game {
 
   private static final double SPEED_MULTIPLIER_GROWTH = 60;
@@ -6,7 +8,7 @@ public class Game {
   private World world;
   private NetworkConnection con;
 
-  private Camera camera;
+  private Camera camera = new Camera();
 
   private boolean started;
   private boolean finished;
@@ -23,7 +25,6 @@ public class Game {
 
   public void init() {
     world = new World();
-    camera = new Camera();
     started = false;
     finished = false;
     for (Player p : players) {
@@ -45,14 +46,17 @@ public class Game {
   }
 
   public void run() {
-    updateSprites();
-    renderSprites();
+
+    if (started) {
+      updateSprites();
+      renderSprites();
+    }
     world.checkAndGenerate(highest);
     updateSpeed();
   }
 
   private void updateSpeed() {
-    float nsm = (float)(1 + (System.currentTimeMillis() - startTime) / (1000 * SPEED_MULTIPLIER_GROWTH));
+    float nsm = (float)(INITIAL_SPEED_MULTIPLIER + (System.currentTimeMillis() - startTime) / (1000 * SPEED_MULTIPLIER_GROWTH));
     setSpeedMultiplier(nsm);
   }
 
@@ -81,7 +85,7 @@ public class Game {
           finished = false;
         }
         //Wenn player höher als vorheriger Höchster, soll dieser wert gespeichert werden -> Kameraverfolgung des höchsten
-        if (cy > _highest) {
+        if (cy > _highest && p.isAlive()) {
           _highest = cy;
         }
 
@@ -98,7 +102,9 @@ public class Game {
         end();
       }
       highest = _highest;
-      camera.setHighest(highest);
+      if (CAMERA_MODE_AUTO) {
+        camera.setHighest(highest);
+      }
     }
   }
 
@@ -109,5 +115,11 @@ public class Game {
   public void end() {
     this.finished = true;
     con.sendEndStats();
+    con.sendEndedGame();
   }
+  
+  public Camera getCamera(){
+    return camera;
+  }
+  
 }

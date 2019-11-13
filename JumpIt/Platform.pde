@@ -34,6 +34,11 @@ public class Platform {
       this.y = y;
     }
   }
+  
+  public Platform(float y, float x){
+    this.y = y;
+    this.x = x;
+  }
 
   public void render(Camera camera) {
 

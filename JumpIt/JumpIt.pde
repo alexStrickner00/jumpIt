@@ -27,3 +27,24 @@ void setup() {
 void draw() {
   game.run();
 }
+
+void keyPressed() {
+  if(key == 'v'){
+    CAMERA_MODE_AUTO = !CAMERA_MODE_AUTO;
+  }
+  if (!CAMERA_MODE_AUTO) {
+    if (keyCode == UP) {
+      game.getCamera().up();
+    }
+    if(keyCode == DOWN){
+      game.getCamera().down();
+    }
+  }
+}
+
+void mouseWheel(MouseEvent event){
+  float e = event.getCount();
+  if (!CAMERA_MODE_AUTO) {
+    game.getCamera().move(e);
+  }
+}

@@ -1,6 +1,7 @@
 public class Camera {
 
   private static final float OFFSET = 300;
+  private static final float STEP = 40;
   private float y;
 
   public Camera() {
@@ -14,4 +15,17 @@ public class Camera {
   public void setHighest(float highest) {
     y = highest - OFFSET;
   }
+  
+  public void up(){
+    this.y += STEP;
+  }
+  
+  public void down(){
+    this.y -= STEP;
+  }
+ 
+  public void move(float e){
+    this.y -= e * 30;
+  }
+  
 }
